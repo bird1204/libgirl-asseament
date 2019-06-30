@@ -13,26 +13,30 @@ RUN apt-get update && apt-get install -y \
 RUN mkdir workspace
 WORKDIR workspace
 
-# 先安裝 pipenv, tensorflow, matplotlib
-RUN pip install pipenv numpy tensorflow matplotlib
-RUN pipenv install --three
+# 把檔案移進 docker
+COPY Pipfile Pipfile
+COPY Pipfile.lock Pipfile.lock
 
-# pipenv shell
-
+# 下載 lgl
 RUN cd /workspace && git clone https://github.com/libgirlenterprise/lgl.git
 # 修改程式 從 conda 改成 pipenv
 RUN sed -i 's/conda/pipenv/g' lgl/lgl/get_unresolve.py
 RUN echo `tail -n 1 lgl/lgl/get_unresolve.py`
 
-# 包成 lib, 讓我可以用 lgl install
-RUN cd lgl && pip install .
-RUN echo `lgl --help`
+# 安裝 pipenv, 並根據已經準備好的 Pipfile, Pipfile.lock 安裝套件
+RUN pip install pipenv
+RUN pipenv --python 3.7 && pipenv sync
 
-# 把 demo 檔案移進 libgirl
-RUN cd /workspace && lgl init libgirl
+# 在 pipenv 裡包成 lib, 讓我可以用 lgl install
+RUN pipenv install -e ./lgl
+RUN echo `pipenv run lgl --help`
+
+# 起始 libgirl, 把 demo 檔案移進 libgirl
+RUN pipenv run lgl init libgirl
 COPY demo_TF.py /workspace/libgirl/libgirl/libgirl.py
 
-# 跑第一次試試看
-RUN cd libgirl && lgl install && lgl run libgirl
+# 在 pipenv 跑第一次 install, run 試試看
+RUN pipenv run lgl --verbose install /workspace/libgirl/libgirl/libgirl.py 
+RUN cd /workspace/libgirl && pipenv run lgl --verbose run libgirl
 
 CMD ["/bin/bash"]

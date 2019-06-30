@@ -12,7 +12,7 @@
 	* 題目 :
 		* 修改lgl的程式碼 (使用git clone), 將lgl run (包含lgl install) 從使用conda改成使用pipenv, 並經測試 (可擇任意python專案)確定改後可正常運作
 		* [lgl on GitHub](https://github.com/libgirlenterprise/lgl.git)
-	* 專案位置 : /python
+	* 專案位置 : /python/dockerfile
 3. **RoR** : 此為現場測試
 4. **ML** : 
 	* 題目 : Explain VC dimension (with growth function and VC-entropy if possible) and explain the VC dimension of the ML algorithm you’re familiar with. 
