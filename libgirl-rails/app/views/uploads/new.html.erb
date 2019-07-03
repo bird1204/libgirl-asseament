@@ -1,0 +1,4 @@
+<%= form_for @project, :url => uploads_path, :html => {:multipart => true }  do %>
+  <%= file_field :project, :source %>
+  <%= submit_tag '上傳', class: 'btn btn-info' %>
+<%end%>

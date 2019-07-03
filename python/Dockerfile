@@ -40,3 +40,7 @@ RUN pipenv run lgl --verbose install /workspace/libgirl/libgirl/libgirl.py
 RUN cd /workspace/libgirl && pipenv run lgl --verbose run libgirl
 
 CMD ["/bin/bash"]
+
+
+# user 不會想要 pipenv run lgl, 要直接 run lgl
+# 有 Pipfile, 就不會 run lg install 了
